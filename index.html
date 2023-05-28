@@ -102,39 +102,50 @@
             </button>
             <ul class="slides-container" id="slides-container">
                 <div class="slide">
-                    <li class="card" id="card1">
-                        <h2>Item 1</h2>
-                        <p>Descrição do item 1</p>
-                        <p>Lance atual: R$100</p>
+                    <li class="card" id="card1" onclick="showPopup('card1')">
+                        <h2 class="card-title">Item 1</h2>
+                        <p class="card-desc">Descrição do item 1</p>
+                        <p class="card-lance">Lance atual: R$100</p>
                     </li>
-                    <li class="card" id="card2">
-                        <h2>Item 2</h2>
-                        <p>Descrição do item 2</p>
-                        <p>Lance atual: R$150</p>
+                    <li class="card" id="card2" onclick="showPopup('card2')">
+                        <h2 class="card-title">Item 2</h2>
+                        <p class="card-desc">Descrição do item 2</p>
+                        <p class="card-lance">Lance atual: R$150</p>
                     </li>
-                    <li class="card" id="card3">
-                        <h2>Item 3</h2>
-                        <p>Descrição do item 3</p>
-                        <p>Lance atual: R$200</p>
+                    <li class="card" id="card3" onclick="showPopup('card3')">
+                        <h2 class="card-title">Item 3</h2>
+                        <p class="card-desc">Descrição do item 3</p>
+                        <p class="card-lance">Lance atual: R$200</p>
                     </li>
-                    <li class="card" id="card4">
-                        <h2>Item 4</h2>
-                        <p>Descrição do item 4</p>
-                        <p>Lance atual: R$250</p>
+                    <li class="card" id="card4" onclick="showPopup('card4')">
+                        <h2 class="card-title">Item 4</h2>
+                        <p class="card-desc">Descrição do item 4</p>
+                        <p class="card-lance">Lance atual: R$250</p>
                     </li>
-                    <li class="card" id="card5">
-                        <h2>Item 5</h2>
-                        <p>Descrição do item 5</p>
-                        <p>Lance atual: R$300</p>
+                    <li class="card" id="card5" onclick="showPopup('card5')">
+                        <h2 class="card-title">Item 5</h2>
+                        <p class="card-desc">Descrição do item 5</p>
+                        <p class="card-lance">Lance atual: R$300</p>
                     </li>
-                    <li class="card" id="card6">
-                        <h2>Item 6</h2>
-                        <p>Descrição do item 6</p>
-                        <p>Lance atual: R$350</p>
+                    <li class="card" id="card6" onclick="showPopup('card6')">
+                        <h2 class="card-title">Item 6</h2>
+                        <p class="card-desc">Descrição do item 6</p>
+                        <p class="card-lance">Lance atual: R$350</p>
                     </li>
                 </div>
             </ul>
           </section>
+
+          <div class="popup" id="popup">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <h2 id="popup-title"></h2>
+            <p id="popup-description"></p>
+            <p id="popup-lance"></p>
+            <form>
+                <input type="text" placeholder="Digite seu Lance" id="lance">
+                <button id="enviar">Enviar</button>
+            </form>
+          </div>
 
           <ul id="list">
 
@@ -147,15 +158,6 @@
             <button onclick="darLance()">Dar Lance</button>
         </div>
 
-        
-        <!--
-        <div class="bottom">
-            <div class="form-container">
-                <input type="number" id="valor-lance" placeholder="Digite o valor do lance">
-            </div>
-        </div>
-        -->
-
-        <script src="scripts.js"></script>
+        <script defer src="scripts.js"></script>
     </body>
 </html>

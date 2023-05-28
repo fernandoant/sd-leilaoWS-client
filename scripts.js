@@ -3,6 +3,13 @@ const slide = document.querySelector(".slide");
 const prevButton = document.getElementById("slide-arrow-prev");
 const nextButton = document.getElementById("slide-arrow-next");
 
+const btn = document.querySelector("#enviar");
+
+btn.addEventListener("click", function(e) {
+    e.preventDefault();
+    closePopup()
+})
+
 nextButton.addEventListener("click", () => {
     const slideWidth = slide.clientWidth;
     slidesContainer.scrollLeft += slideWidth;
@@ -12,6 +19,8 @@ prevButton.addEventListener("click", () => {
     const slideWidth = slide.clientWidth;
     slidesContainer.scrollLeft -= slideWidth;
 });
+
+listarLeiloes()
 
 async function makeRequest(url, method, data) {
     const base_url = "http://localhost:8080"
@@ -98,4 +107,31 @@ async function darLance() {
     }
     
     makeRequest("/leilao/1", "POST", body)
+}
+
+
+function showPopup(id) {
+    // Preenche as informações no popup
+    card = document.getElementById(id)
+    
+    cardTitle = card.getElementsByClassName('card-title')[0].textContent
+    cardDesc = card.getElementsByClassName('card-desc')[0].textContent
+    cardValue = card.getElementsByClassName('card-lance')[0].textContent
+    
+    popupTitle = document.getElementById('popup-title')
+    popupDesc = document.getElementById('popup-description')
+    popupValue = document.getElementById('popup-lance')
+
+    popupTitle.textContent = cardTitle
+    popupDesc.textContent = cardDesc
+    popupValue.textContent = cardValue
+
+    // Exibe o popup
+    document.getElementById('popup').style.display = 'block';
+  }
+
+function closePopup() {
+    // Fecha o popup
+    document.getElementById('lance').value = ''
+    document.getElementById('popup').style.display = 'none';
 }
