@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sistema de Leilão</title>
+        <!--
+        <style>
+            /*
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f9f9f9;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+
+            .card {
+                width: 300px;
+                height: 200px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                margin: 10px;
+                background-color: #fff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                transition: background-color 0.3s ease;
+            }
+
+            .card:hover {
+                background-color: #f0f0f0;
+            }
+
+            .selected {
+                background-color: #ffcc00;
+            }
+
+            .container {
+                border: 1px solid red;
+                padding-left: 5%;
+                max-width: 95%;
+            }
+
+            h2 {
+                font-size: 18px;
+                margin: 0;
+            }
+
+            p {
+                margin: 10px 0;
+            }
+
+            .btn-show-more {
+                margin-top: 20px;
+            }
+
+            .form-container {
+                margin-top: 20px;
+            }
+
+            .form-container input[type="number"] {
+                width: 200px;
+                padding: 10px;
+                font-size: 16px;
+            }
+
+            .form-container button {
+                padding: 10px 20px;
+                font-size: 16px;
+                background-color: #4caf50;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .form-container button:hover {
+                background-color: #45a049;
+            }
+
+            .bottom {
+                display: flex;
+                justify-content: center;
+            }
+            */
+        </style>
+        -->
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <h1>Leilões Ativos</h1>
+        <section class="slider-wrapper">
+            <button class="slide-arrow" id="slide-arrow-prev">
+              &#8249;
+            </button>
+            <button class="slide-arrow" id="slide-arrow-next">
+              &#8250;
+            </button>
+            <ul class="slides-container" id="slides-container">
+                <div class="slide">
+                    <li class="card" id="card1">
+                        <h2>Item 1</h2>
+                        <p>Descrição do item 1</p>
+                        <p>Lance atual: R$100</p>
+                    </li>
+                    <li class="card" id="card2">
+                        <h2>Item 2</h2>
+                        <p>Descrição do item 2</p>
+                        <p>Lance atual: R$150</p>
+                    </li>
+                    <li class="card" id="card3">
+                        <h2>Item 3</h2>
+                        <p>Descrição do item 3</p>
+                        <p>Lance atual: R$200</p>
+                    </li>
+                    <li class="card" id="card4">
+                        <h2>Item 4</h2>
+                        <p>Descrição do item 4</p>
+                        <p>Lance atual: R$250</p>
+                    </li>
+                    <li class="card" id="card5">
+                        <h2>Item 5</h2>
+                        <p>Descrição do item 5</p>
+                        <p>Lance atual: R$300</p>
+                    </li>
+                    <li class="card" id="card6">
+                        <h2>Item 6</h2>
+                        <p>Descrição do item 6</p>
+                        <p>Lance atual: R$350</p>
+                    </li>
+                </div>
+            </ul>
+          </section>
+
+          <ul id="list">
+
+          </ul>
+          
+          <div class="buttons">
+            <button onclick="listarLeiloes()">Listar Leilões</button>
+            <button onclick="cadastrarUsuario()">Cadastrar Usuario</button>
+            <button onclick="criarLeilao()">Criar Leilão</button>
+            <button onclick="darLance()">Dar Lance</button>
+        </div>
+
+        
+        <!--
+        <div class="bottom">
+            <div class="form-container">
+                <input type="number" id="valor-lance" placeholder="Digite o valor do lance">
+            </div>
+        </div>
+        -->
+
+        <script src="scripts.js"></script>
+    </body>
+</html>
