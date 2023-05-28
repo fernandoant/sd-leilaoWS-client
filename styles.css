@@ -1,88 +1,86 @@
 * {
     box-sizing: border-box;
-  }
+}
   
-  body {
-    max-width: 1440px;
+body {
     margin: auto;
     overflow-x: hidden;
     overflow-y: hidden;
-    /*background-color: rgb(111, 22, 119);*/
     background-color: rgb(37, 129, 120);
-  }
+}
 
-  ul {
+ul {
     background-color: rgb(124, 124, 124, 0.6)
-  }
+}
 
-  ul::-webkit-scrollbar {
+ul::-webkit-scrollbar {
     display: none;
-  }
+}
   
-  .slider-wrapper {
+.slider-wrapper {
     width: 95%;
+    height: 100%;
     margin: 1rem;
     position: relative;
     overflow: hidden;
-  }
+}
   
-  .slides-container {
+.slides-container {
     height: 25%;
     width: 100%;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
     display: flex;
     overflow: scroll hidden;
     scroll-behavior: smooth;
     list-style: none;
     margin: 0;
-  }
+}
   
-  .slide-arrow {
+.slide-arrow {
     position: absolute;
     display: flex;
-    top: 0;
-    bottom: 0;
-    margin: auto;
+    margin-top: 75px;
     height: 4rem;
+    width: 2rem;
     background-color: rgb(39, 39, 39);
     color: white;
     border: none;
-    width: 2rem;
     font-size: 3rem;
     cursor: pointer;
     opacity: 0.6;
     transition: opacity 100ms;
-  }
+}
   
-  .slide-arrow:hover,
-  .slide-arrow:focus {
+.slide-arrow:hover,
+.slide-arrow:focus {
     opacity: 0.9;
-  }
+}
   
-  #slide-arrow-prev {
+#slide-arrow-prev {
     left: 0;
     padding-left: 0.25rem;
     border-radius: 0 2rem 2rem 0;
-  }
-  
-  #slide-arrow-next {
+}
+ 
+#slide-arrow-next {
     right: 0;
     padding-left: 0.75rem;
     border-radius: 2rem 0 0 2rem;
-  }
+}
   
-  .slide {
+#slide {
     display: flex;
     flex-flow: row nowrap;
     gap: 15px;
-  }
+}
 
-  .card {
+.card {
     width: 270px;
-    height: 180px;
+    height: 270px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-shadow: 5px 5px 5px#888888;
     align-items: center;
     text-align: center;
     font-size: 20px;
@@ -92,7 +90,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
     cursor: pointer;
-  }
+}
 
 .popup {
     position: fixed;
@@ -124,4 +122,103 @@
     font-size: 20px;
     color: #999;
     cursor: pointer;
+}
+
+#main-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.forms {
+    border: 1px solid #999;
+    border-radius: 4px;
+    box-shadow: 5px 5px 5px#888888;
+    margin-bottom: 20px;
+}
+
+#left-section {
+    width: 25%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f1f1f1;
+}
+
+#right-section {
+    width: 75%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#right-section h1 {
+    font-size: 30px;
+    color: white;
+}
+
+#left-section form {
+    padding: 20px;
+}
+
+#left-section h2,
+#right-section h2 {
+    margin-bottom: 10px;
+}
+
+#login-form,
+#cadastro-leilao-form {
+    width: 90%;
+    margin-bottom: 20px auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form h2,
+#cadastro-leilao-form h2 {
+    margin-bottom: 10px;
+}
+
+.login-form button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-form button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.login-form input[type="text"],
+#cadatro-leilao-form label,
+#cadastro-leilao-form textarea,
+#cadastro-leilao-form input[type="text"],
+#cadastro-leilao-form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#cadastro-leilao-form input[type="submit"],
+#login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#cadastro-leilao-form input[type=submit]:hover {
+    background-color: #45a049;
 }
