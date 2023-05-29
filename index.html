@@ -27,7 +27,10 @@
                     <label for="produto-preco-minimo">Preço Mínimo:</label>
                     <input type="number" id="produto-preco-minimo" name="produto-preco-minimo" step="0.01" required>
 
-                    <input type="submit" value="Cadastrar">
+                    <label for="produto-duracao">Duração:</label>
+                    <input type="number" id="produto-duracao" name="produto-duracao" required>
+
+                    <button id="cadastrar-leilao" type="submit" >Cadastrar</button>
                 </form>
             </div>
 
@@ -36,58 +39,12 @@
                 <h1>Leilões Ativos</h1>
 
                 <div class="slider-wrapper">
-                    <button class="slide-arrow" id="slide-arrow-prev">
-                    &#8249;
-                    </button>
-                    <button class="slide-arrow" id="slide-arrow-next">
-                    &#8250;
-                    </button>
-                    <div id="slide">
-                        <ul class="slides-container" id="slides-container">
-                            
-                            <li class="card" id="card1" onclick="showPopup('card1')">
-                                <h2 class="card-title">Item 1</h2>
-                                <p class="card-tempo">Tempo Restante: 5:00</p>
-                                <p class="card-lance">Lance atual: R$100</p>
-                            </li>
-                            <li class="card" id="card2" onclick="showPopup('card2')">
-                                <h2 class="card-title">Item 2</h2>
-                                <p class="card-tempo">Tempo Restante: 5:00</p>
-                                <p class="card-lance">Lance atual: R$150</p>
-                            </li>
-                            <li class="card" id="card3" onclick="showPopup('card3')">
-                                <h2 class="card-title">Item 3</h2>
-                                <p class="card-tempo">Tempo Restante: 5:00</p>
-                                <p class="card-lance">Lance atual: R$200</p>
-                            </li>
-                            <li class="card" id="card4" onclick="showPopup('card4')">
-                                <h2 class="card-title">Item 4</h2>
-                                <p class="card-tempo">Tempo Restante: 5:00</p>
-                                <p class="card-lance">Lance atual: R$250</p>
-                            </li>
-                            <li class="card" id="card5" onclick="showPopup('card5')">
-                                <h2 class="card-title">Item 5</h2>
-                                <p class="card-tempo">Tempo Restante: 5:00</p>
-                                <p class="card-lance">Lance atual: R$300</p>
-                            </li>
-                            <li class="card" id="card6" onclick="showPopup('card6')">
-                                <h2 class="card-title">Item 6</h2>
-                                <p class="card-tempo">Tempo Restante: 5:00</p>
-                                <p class="card-lance">Lance atual: R$350</p>
-                            </li>
-                            <li class="card" id="card7" onclick="showPopup('card7')">
-                                <h2 class="card-title">Item 7</h2>
-                                <p class="card-tempo">Tempo Restante: 5:00</p>
-                                <p class="card-lance">Lance atual: R$400</p>
-                            </li>
-                            <li class="card" id="card8" onclick="showPopup('card8')">
-                                <h2 class="card-title">Item 8</h2>
-                                <p class="card-tempo">Tempo Restante: 5:00</p>
-                                <p class="card-lance">Lance atual: R$450</p>
-                            </li>
-                            
-                        </ul>
-                    </div>
+                    
+                    <h1 id="card-list-title"></h1>
+
+                    <ul id="card-list" id="slides-container">
+                    </ul>
+                    
                 </div>
                 <div class="buttons">
                     <button onclick="listarLeiloes()">Listar Leilões</button>

@@ -1,49 +1,38 @@
 const slidesContainer = document.getElementById("slides-container");
-const prevButton = document.getElementById("slide-arrow-prev");
-const nextButton = document.getElementById("slide-arrow-next");
 const btn = document.querySelector("#btLance");
 
 btnLogin = document.getElementById('btCadastro');
+btnCadLeilao = document.getElementById("cadastrar-leilao");
 
-let username = "";
+let userName = "";
+let userId = -1;
+let leiloes = [];
 
 btn.addEventListener("click", function(e) {
     e.preventDefault();
     closePopup()
 })
 
-nextButton.addEventListener("click", () => {
-    const slide = document.querySelector('#slide')
-    const slideWidth = slide.clientWidth;
-    slidesContainer.scrollLeft += slideWidth;
-});
+btnCadLeilao.addEventListener("click", function(e) {
+    e.preventDefault();
+    criarLeilao();
 
-prevButton.addEventListener("click", () => {
-    const slideWidth = slide.clientWidth;
-    slidesContainer.scrollLeft -= slideWidth;
-});
+})
 
 btnLogin.addEventListener("click", async function(event) {
     event.preventDefault();
 
     const nameInput = document.getElementById('name-input');
     const name = nameInput.value;
-    //const response = await cadastrarUsuario(name);
+    const response = await cadastrarUsuario(name);
 
-    let response = {
-        "id": 1,
-        "nome": name
-    }
-
-    username = response.nome;
+    userId = response.id;
+    userName = response.nome;
     
     login()
     
     nameInput.value = "";
 });
-
-login()
-// listarLeiloes()
 
 async function makeRequest(url, method, data) {
     const base_url = "http://localhost:8080"
@@ -77,48 +66,30 @@ async function makeRequest(url, method, data) {
 
 async function criarLeilao() {
     
+    let nome = document.getElementById('produto-nome')
+    let desc = document.getElementById('produto-descricao')
+    let preco = document.getElementById('produto-preco-minimo')
+    let duracao = document.getElementById('produto-duracao')
+
     body = {
         "criador": {
-            "id": "1",
-            "nome": "Fernando"
+            "id": userId,
+            "nome": userName
         },
         "produto": {
-            "nome": "Jabulani",
-            "descricao": "Bola oficial da Copa do Mundo de 2010",
-            "precoMinimo": "15000"
+            "nome": nome.value,
+            "descricao": desc.value,
+            "precoMinimo": parseFloat(preco.value)
         },
-        "duracao": "300"
+        "duracao": duracao.value
     }
 
-    body2 = {
-        "criador": {
-            "id": "1",
-            "nome": "Fernando"
-        },
-        "produto": {
-            "nome": "Gol",
-            "descricao": "Volkswagen Gol 1.0 5P Flex",
-            "precoMinimo": "43000"
-        },
-        "duracao": "300"
-    }
-
-    body3 = {
-        "criador": {
-            "id": "1",
-            "nome": "Fernando"
-        },
-        "produto": {
-            "nome": "Computador",
-            "descricao": "Computador Gamer",
-            "precoMinimo": "5000"
-        },
-        "duracao": "300"
-    }
+    nome.value = ''
+    desc.value = ''
+    preco.value = ''
+    duracao.value = ''
 
     makeRequest("/leilao", "POST", body)
-    makeRequest("/leilao", "POST", body2)
-    makeRequest("/leilao", "POST", body3)
 }
 
 async function cadastrarUsuario(name ) {
@@ -151,11 +122,20 @@ async function cadastrarUsuario(name ) {
     
 }
 
-async function listarLeiloes() {
+async function fetchLeiloes() {
     const containerLeilao = document.getElementById('slide')
 
     await makeRequest("/leilao", "GET")
     .then(data => {
+        console.log('Make request: ' + data)
+        leiloes = JSON.stringify(data, null, 4);
+        return data
+        // leiloes.push(data);
+    })
+    .catch(error => {
+        console.log(error);
+    })
+    /*.then(data => {
         data.map(async (element) => {
            const li = document.createElement('li');
            li.classList.add('card')
@@ -192,7 +172,7 @@ async function listarLeiloes() {
         title.textContent = "Não existem leilões ativos no momento"
         li.appendChild(title)
         containerLeilao.appendChild(li)
-    })
+    })*/
 }
 
 async function darLance() {
@@ -233,7 +213,7 @@ function closePopup() {
 }
 
 function login() {
-    if (username === "") {
+    if (userName === "") {
         return;
     }
 
@@ -242,7 +222,57 @@ function login() {
     const nameInput = loginForm.querySelector('#name-input')
     const btCadastro = loginForm.querySelector('#btCadastro')
 
-    title.textContent = `Você está conectado como: ${username}`
+    title.textContent = `Você está conectado como: ${userName}`
     nameInput.style.display = 'none';
     btCadastro.style.display = 'none';
 }
+
+async function listarLeiloes() {
+    let cardListTitle = document.getElementById('card-list-title');
+    let cardList = document.getElementById('card-list');
+
+    let listLeilao = await fetchLeiloes();
+
+    console.log(leiloes)
+
+    if (leiloes.length == 0) {
+        cardListTitle.textContent = "Não há leilões disponíveis no momento"
+        cardList.style.display = 'none'
+    }
+    else {
+        cardListTitle.style.display = 'none';
+        cardList.style.display = 'grid';
+        leiloes.map(leilao => {
+            const li = document.createElement('li');
+            li.classList.add('card')
+
+            li.onclick = function() {
+                    showPopup(li);
+            };
+
+            const h2 = document.createElement('h2');
+            h2.classList.add('card-title')
+            h2.textContent = leilao.leilaoItem.produto.nome;
+
+            const p1 = document.createElement('p')
+            p1.classList.add('card-desc')
+            p1.textContent = leilao.leilaoItem.produto.descricao;
+
+            const p2 = document.createElement('p')
+            p2.classList.add('card-lance')
+            p2.textContent = `Lance atual: R$${leilao.leilaoItem.produto.precoMinimo}`
+
+            li.appendChild(h2);
+            li.appendChild(p1);
+            li.appendChild(p2);
+            
+            console.log(li)
+            containerLeilao.appendChild(li)
+        })
+    }
+}
+
+login()
+
+listarLeiloes()
+setInterval(listarLeiloes, 30000)
