@@ -6,6 +6,8 @@ const btnCadLeilao = document.getElementById("cadastrar-leilao");
 let userName = "";
 let userId = -1;
 
+let leiloes = []
+
 btnLance.addEventListener("click", function(e) {
     e.preventDefault();
     closePopup()
@@ -155,49 +157,59 @@ async function fetchLeiloes() {
         console.log(error)
         throw error;
     }
-    
-    
-    /*.then(data => {
-        return JSON.stringify(data, null, 4);
-    })
-    .catch(error => {
-        console.log(error);
-    })*/
 }
 
 // TODO: Dar lance
-async function darLance(card) {
+async function darLance(idLeilao, valor) {
+
+    if (valor == "") {
+        console.log("Valor vazio");
+        return ;
+    }
+
     body = {
         "cliente": {
             "id": userId,
             "nome": userName
         },
-        "valor": ""
+        "valor": valor
     }
+
+    console.log("darLance body: " + JSON.stringify(body, null, 4))
     
-    makeRequest("/leilao/1", "POST", body)
+    makeRequest(`/leilao/${idLeilao}`, "POST", body)
 }
 
-function showPopup(card) {
+function showPopup(leilao) {
+
+    let idLeilao = leilao.leilaoItem.idLeilao;
+    let produto = leilao.leilaoItem.produto;
+
     // Preenche as informações no popup
-    cardTitle = card.querySelector('.card-title').textContent
-    cardDesc = card.querySelector('.card-desc').textContent
-    cardValue = card.querySelector('.card-lance').textContent
     
     popup = document.getElementById('popup')
     popupTitle = popup.querySelector('#popup-title')
     popupDesc = popup.querySelector('#popup-description')
     popupValue = popup.querySelector('#popup-lance')
+    popupButton = popup.querySelector('#btLance')
 
-    popupTitle.textContent = cardTitle
-    popupDesc.textContent = cardDesc
-    popupValue.textContent = cardValue
+    popupTitle.textContent = produto.nome;
+    popupDesc.textContent = produto.descricao;
+    popupValue.textContent = produto.precoMinimo;
+
+    popupButton.onclick = () => {
+        valueInput = popup.querySelector('#lance')
+        valor = valueInput.value
+        darLance(idLeilao, valor)
+        popup.style.display = 'none';
+        valueInput.value = ''
+    }
 
     // Exibe o popup
     document.getElementById('popup').style.display = 'block';
 }
 
-function closePopup() {
+function closePopup() {A
     // Fecha o popup
     document.getElementById('lance').value = ''
     document.getElementById('popup').style.display = 'none';
@@ -231,8 +243,8 @@ async function generateCardList() {
             const li = document.createElement('li');
             li.classList.add('card')
 
-            li.onclick = function() {
-                    showPopup(li);
+            li.onclick = () => {
+                showPopup(leilao);
             };
 
             const h2 = document.createElement('h2');
