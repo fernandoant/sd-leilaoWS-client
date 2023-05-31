@@ -55,6 +55,14 @@ body {
 */
 
 
+#card-list-title {
+    display: none;
+    color:rgb(218, 16, 16);
+    margin: auto;
+    justify-content: center;
+    text-align: center;
+}
+
 
 .card {
     width: 95%;
@@ -138,12 +146,14 @@ body {
 }
 
 #right-section h1 {
+    margin: 10px auto;
     font-size: 30px;
     color: white;
 }
 
 #left-section form {
-    padding: 20px;
+    margin: 5px;
+    padding: 15px;
 }
 
 #left-section h2,
@@ -154,17 +164,17 @@ body {
 #login-form,
 #cadastro-leilao-form {
     width: 90%;
-    margin-bottom: 20px auto;
+    margin: 20px auto;
     display: flex;
     flex-direction: column;
 }
 
-.login-form h2,
+#login-form h2,
 #cadastro-leilao-form h2 {
     margin-bottom: 10px;
 }
 
-.login-form button[type="submit"] {
+#login-form button[type="submit"] {
     width: 100%;
     padding: 10px;
     background-color: #4CAF50;
@@ -174,11 +184,11 @@ body {
     cursor: pointer;
 }
 
-.login-form button[type="submit"]:hover {
+#login-form button[type="submit"]:hover {
     background-color: #45a049;
 }
 
-.login-form input[type="text"],
+#login-form input[type="text"],
 #cadatro-leilao-form label,
 #cadastro-leilao-form textarea,
 #cadastro-leilao-form input[type="text"],
@@ -199,6 +209,10 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+#cadastro-leilao-form button[type="submit"]:disabled {
+    background-color: gray;
 }
 
 #cadastro-leilao-form input[type=submit]:hover {
