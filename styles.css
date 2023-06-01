@@ -4,31 +4,28 @@
   
 body {
     margin: auto;
-    background-color: rgb(100, 171, 180);
+    background-color: rgb(127, 144, 146, 0.8);
 }
 
 .slider-wrapper {
     width: 95%;
     height: 80%;
     margin: 1rem;
+    background-color: #ffffff70;
     position: relative;
 }
 
 #card-list {
     gap: 10px;
-    height: 100%;
+    height: calc(100% - 62px);
     width: 100%;
     padding: 5px 10px;
-    display: grid;
+    display: none;
     grid-template-columns: repeat(4, auto);
     list-style: none;
-    margin: 0;
-    background-color: #ffffff70;
-    box-shadow: 5px 5px 5px rgb(63, 63, 63);
-    /*
-    overflow: scroll hidden;
-    scroll-behavior: smooth;
-    */
+    margin: auto;
+    box-shadow: 5px 5px 5px rgb(71, 71, 71);
+    border: 2px solid #757575;
     overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: #00000030 #00000020
@@ -54,21 +51,34 @@ body {
 }
 */
 
-
+/*
 #card-list-title {
-    display: none;
+    display: block;
     color:rgb(218, 16, 16);
     margin: auto;
     justify-content: center;
     text-align: center;
+    box-shadow: 5px 5px 5px#888888;
+}
+*/
+
+#card-list-title {
+    height: 62px;
+    display: block;
+    color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    margin: auto;
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    text-shadow: 1.4px 1.4px #757575;
 }
 
 
 .card {
     width: 95%;
-    height: 95%;
-    /*border: 1px solid #ccc;*/
-    border: 1px solid blue;
+    height: 100%;
+    border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 5px 5px 5px#888888;
     align-items: center;
@@ -145,7 +155,7 @@ body {
     justify-content: center;
 }
 
-#right-section h1 {
+#right-section-title {
     margin: 10px auto;
     font-size: 30px;
     color: white;

@@ -8,14 +8,10 @@ let userId = -1;
 
 let leiloes = []
 
-btnLance.addEventListener("click", function(e) {
-    e.preventDefault();
-    closePopup()
-})
-
 btnCadLeilao.addEventListener("click", function(e) {
     e.preventDefault();
     cadastrarLeilao();
+    generateCardList();
 })
 
 btnLogin.addEventListener("click", async function(event) {
@@ -23,6 +19,10 @@ btnLogin.addEventListener("click", async function(event) {
 
     const nameInput = document.getElementById('name-input');
     const name = nameInput.value;
+
+    if (name === "") {
+        return;
+    }
 
     const response = await cadastrarUsuario(name);
 
@@ -34,7 +34,7 @@ btnLogin.addEventListener("click", async function(event) {
     userName = response.nome;
     
     login()
-    
+    generateCardList();
     nameInput.value = "";
 });
 
@@ -97,24 +97,26 @@ async function cadastrarUsuario(name) {
     let response = await makeRequest("/cliente", "POST", body);
 
     
-    const evtSource = new EventSource(`http://localhost:8080/sse/${name}`, {
-        headers: {
-            "Content-Type": "text/event-stream"
-        }
-    })
+    const evtSource = new EventSource(`http://localhost:8080/sse/${name}`)
 
     evtSource.addEventListener("newLeilao", (leilao) => {
         console.log("Event - newLeilao: " + leilao.data);
-        generateCardList()
+        newLeilao(JSON.parse(leilao.data))
     })
 
     evtSource.addEventListener("newLance", (lance) => {
         console.log("Event - newLance: " + lance.data);
+        updateCard(JSON.parse(lance.data))
     })
 
-    evtSource.addEventListener("endLeilao", (leilao) => {
-        console.log("Event - endLeilao: " + leilao.data);
+    evtSource.addEventListener("notifyNewLance", (lance) => {
+        console.log("Event - notifyNewLance: " + lance.data);
     })
+
+    evtSource.addEventListener("notifyEndLeilao", (leilao) => {
+        console.log("Event - notifyEndLeilao: " + leilao.data);
+    })
+    
 
     return response;
 }
@@ -151,7 +153,6 @@ async function fetchLeiloes() {
     try {
         const data = await makeRequest("/leilao", "GET")
         return data;
-        //return JSON.stringify(data, null, 4);
     }
     catch(error) {
         console.log(error)
@@ -159,11 +160,10 @@ async function fetchLeiloes() {
     }
 }
 
-// TODO: Dar lance
 async function darLance(idLeilao, valor) {
 
     if (valor == "") {
-        console.log("Valor vazio");
+        console.log(`Valor recebido: '${valor}'`);
         return ;
     }
 
@@ -172,6 +172,7 @@ async function darLance(idLeilao, valor) {
             "id": userId,
             "nome": userName
         },
+        "idLeilao": idLeilao,
         "valor": valor
     }
 
@@ -181,6 +182,10 @@ async function darLance(idLeilao, valor) {
 }
 
 function showPopup(leilao) {
+
+    if (userId === -1 || userName === "") {
+        return;
+    }
 
     let idLeilao = leilao.leilaoItem.idLeilao;
     let produto = leilao.leilaoItem.produto;
@@ -193,23 +198,25 @@ function showPopup(leilao) {
     popupValue = popup.querySelector('#popup-lance')
     popupButton = popup.querySelector('#btLance')
 
+    form = popup.querySelector('#lance')
+
     popupTitle.textContent = produto.nome;
     popupDesc.textContent = produto.descricao;
-    popupValue.textContent = produto.precoMinimo;
+    popupValue.textContent = leilao.leilaoItem.lanceAtual.valor;
 
-    popupButton.onclick = () => {
-        valueInput = popup.querySelector('#lance')
+    form.addEventListener("submit", function(event) {
+        event.preventDefault()
+        valueInput = popup.querySelector('#lance-valor')
         valor = valueInput.value
         darLance(idLeilao, valor)
         popup.style.display = 'none';
         valueInput.value = ''
-    }
-
+    })
     // Exibe o popup
     document.getElementById('popup').style.display = 'block';
 }
 
-function closePopup() {A
+function closePopup() {
     // Fecha o popup
     document.getElementById('lance').value = ''
     document.getElementById('popup').style.display = 'none';
@@ -220,55 +227,117 @@ async function generateCardList() {
     const cardListTitle = document.getElementById('card-list-title');
     const cardList = document.getElementById('card-list');
 
-    leiloes = await fetchLeiloes();
+    cardList.innerHTML = ''
 
-    if (leiloes == undefined) {
+    const listLeiloes = await fetchLeiloes();
+
+    if (listLeiloes == undefined) {
         return;
     }
 
-    if (leiloes.length == 0) {
+    const count = listLeiloes.filter(item => item.leilaoItem.active === true).length;
+
+    if (listLeiloes.length == 0 || count == 0) {
         cardListTitle.textContent = "Não há leilões disponíveis no momento"
         cardList.style.display = 'none'
     }
     else {
-        cardListTitle.style.display = 'none';
+        cardListTitle.textContent = "Leilões ativos"
         cardList.style.display = 'grid';
-        
-        console.log(leiloes)
-        console.log(typeof leiloes)
-
-        listLeiloes = leiloes
-
-        listLeiloes.map(leilao => {
-            const li = document.createElement('li');
-            li.classList.add('card')
-
-            li.onclick = () => {
-                showPopup(leilao);
-            };
-
-            const h2 = document.createElement('h2');
-            h2.classList.add('card-title')
-            h2.textContent = leilao.leilaoItem.produto.nome;
-
-            const p1 = document.createElement('p')
-            p1.classList.add('card-desc')
-            p1.textContent = leilao.leilaoItem.produto.descricao;
-
-            const p2 = document.createElement('p')
-            p2.classList.add('card-lance')
-            p2.textContent = `Lance atual: R$${leilao.leilaoItem.produto.precoMinimo}`
-
-            li.appendChild(h2);
-            li.appendChild(p1);
-            li.appendChild(p2);
-            
-            console.log(li)
-            cardList.appendChild(li)
-        })
+        addCard(listLeiloes);
     }
 }
 
-generateCardList()
+function addCard(listLeiloes) {
 
-//setInterval(listarLeiloes, 30000)
+    const cardList = document.getElementById('card-list');
+
+    if (listLeiloes == undefined || listLeiloes.length == 0) {
+        return;
+    }
+
+    listLeiloes.map(leilao => {
+
+        if (leilao.leilaoItem.active == false) {
+            return;
+        }
+
+        const li = document.createElement('li');
+        li.classList.add('card')
+
+        li.onclick = () => {
+            showPopup(leilao);
+        };
+
+        const h2 = document.createElement('h2');
+        h2.classList.add('card-title')
+        h2.textContent = leilao.leilaoItem.produto.nome;
+
+        const p1 = document.createElement('p')
+        p1.classList.add('card-desc')
+        p1.textContent = leilao.leilaoItem.produto.descricao;
+
+        const p2 = document.createElement('p')
+        p2.textContent = 'Lance atual:'
+
+        const p3 = document.createElement('p')
+        p3.classList.add('card-lance')
+        p3.textContent = leilao.leilaoItem.lanceAtual.valor;
+
+        const p4 = document.createElement('p')
+        p4.classList.add('card-tempo-restante')
+        p4.textContent = `Tempo Restante: ${formatTime(leilao.leilaoItem.duracao)}`;
+
+        li.appendChild(h2);
+        li.appendChild(p1);
+        li.appendChild(p2);
+        li.appendChild(p3);
+        li.appendChild(p4);
+        cardList.appendChild(li);
+        
+        countdown(leilao.leilaoItem.duracao, p4, li);
+    })
+
+    if (countActive > 0) {
+        cardList.style.display = 'grid';
+    }
+}
+
+function updateCard(lance) {
+
+    const idLeilao = lance.idLeilao
+    const valor = lance.valor;
+    const cardList = document.getElementById('card-list');
+    const card = cardList.children[idLeilao - 1];
+
+    card.querySelector('.card-lance').textContent = valor;
+}
+
+function newLeilao(leilao) {
+    leiloes.push(leilao)
+    addCard([leilao])
+}
+
+function formatTime(time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+}
+
+function countdown(duration, display, element) {
+    let timer = duration;
+
+    const countdownInterval = setInterval(function() {
+        display.textContent = `Tempo Restante: ${formatTime(timer)}`;
+        if (timer <= 0) {
+            clearInterval(countdownInterval);
+            display.textContent = "Tempo encerrado!";
+            element.onclick = null;
+            element.disabled = true;
+        }
+        timer--;
+    }, 1000);
+}
+
+generateCardList()
